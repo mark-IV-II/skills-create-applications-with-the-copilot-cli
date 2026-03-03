@@ -61,10 +61,47 @@ function divide(a, b) {
 }
 
 /**
+ * Performs modulo operation (returns remainder)
+ * @param {number} a - First operand (dividend)
+ * @param {number} b - Second operand (divisor)
+ * @returns {number} Remainder of a divided by b
+ * @throws {Error} If dividing by zero
+ */
+function modulo(a, b) {
+  if (b === 0) {
+    throw new Error('Cannot divide by zero');
+  }
+  return a % b;
+}
+
+/**
+ * Performs exponentiation (power operation)
+ * @param {number} base - The base number
+ * @param {number} exponent - The exponent/power
+ * @returns {number} Base raised to the exponent
+ */
+function power(base, exponent) {
+  return Math.pow(base, exponent);
+}
+
+/**
+ * Calculates the square root of a number
+ * @param {number} n - The number to find the square root of
+ * @returns {number} The square root of n
+ * @throws {Error} If the number is negative
+ */
+function squareRoot(n) {
+  if (n < 0) {
+    throw new Error('Cannot calculate square root of a negative number');
+  }
+  return Math.sqrt(n);
+}
+
+/**
  * Calculates the result based on the operation
  * @param {number} a - First operand
- * @param {string} operation - The operation to perform (+, -, *, /)
- * @param {number} b - Second operand
+ * @param {string} operation - The operation to perform (+, -, *, /, %, **)
+ * @param {number} b - Second operand (or exponent for ** and sqrt operand for sqrt)
  * @returns {number} The result of the operation
  */
 function calculate(a, operation, b) {
@@ -77,6 +114,12 @@ function calculate(a, operation, b) {
       return multiply(a, b);
     case '/':
       return divide(a, b);
+    case '%':
+      return modulo(a, b);
+    case '**':
+      return power(a, b);
+    case 'sqrt':
+      return squareRoot(a);
     default:
       throw new Error(`Unknown operation: ${operation}`);
   }
@@ -89,6 +132,9 @@ function displayMenu() {
   console.log('  - : Subtraction');
   console.log('  * : Multiplication');
   console.log('  / : Division');
+  console.log('  % : Modulo (remainder)');
+  console.log('  ** : Exponentiation (power)');
+  console.log('  sqrt : Square root (use as "sqrt 16")');
   console.log('  exit : Quit the calculator\n');
 }
 
@@ -128,6 +174,9 @@ module.exports = {
   subtract,
   multiply,
   divide,
+  modulo,
+  power,
+  squareRoot,
   calculate,
 };
 
