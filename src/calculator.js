@@ -139,7 +139,7 @@ function displayMenu() {
 }
 
 function askForCalculation() {
-  rl.question('Enter calculation (e.g., 10 + 5) or "exit": ', (input) => {
+  rl.question('Enter calculation (e.g., 10 + 5, 5 % 2, 2 ** 3, sqrt 16) or "exit": ', (input) => {
     if (input.toLowerCase() === 'exit') {
       console.log('Goodbye!');
       rl.close();
@@ -147,9 +147,22 @@ function askForCalculation() {
     }
 
     try {
-      const matches = input.match(/(-?\d+\.?\d*)\s*([+\-*/])\s*(-?\d+\.?\d*)/);
+      // Handle sqrt operation separately (single operand)
+      const sqrtMatch = input.match(/sqrt\s+(-?\d+\.?\d*)/i);
+      if (sqrtMatch) {
+        const n = parseFloat(sqrtMatch[1]);
+        const result = squareRoot(n);
+        console.log(`Result: sqrt ${n} = ${result}`);
+        askForCalculation();
+        return;
+      }
+
+      // Handle binary operations (+, -, *, /, %, **)
+      const matches = input.match(/(-?\d+\.?\d*)\s*([\+\-\*/%]|\*\*)\s*(-?\d+\.?\d*)/);
       if (!matches) {
-        console.log('Invalid format. Please use: number operation number (e.g., 10 + 5)');
+        console.log('Invalid format. Please use:');
+        console.log('  Binary: number operation number (e.g., 10 + 5, 5 % 2, 2 ** 3)');
+        console.log('  Unary:  sqrt number (e.g., sqrt 16)');
         askForCalculation();
         return;
       }
